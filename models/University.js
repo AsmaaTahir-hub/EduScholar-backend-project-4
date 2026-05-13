@@ -1,29 +1,33 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose')
 
-const universitySchema = new mongoose.Schema({
-name : {
-type : String ,
-required : true ,
-} ,
-country : {
-type : String ,
-required : true ,
-} ,
-city : {
-type : String ,
-required : true ,
-} ,
-rinking : {
-type : Number ,
-} ,
+const universitySchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true
+    },
 
-details : {
-type : String ,
+    country: {
+      type: String,
+      required: true
+    },
 
-} ,
-},
-{timestamps:true}
+    city: {
+      type: String,
+      required: true
+    },
 
-);
-const University = mongoose.model("University",universitySchema)
-export default University
+    ranking: {
+      type: Number
+    },
+
+    details: {
+      type: String
+    }
+  },
+  { timestamps: true }
+)
+
+const University = mongoose.model('University', universitySchema)
+
+module.exports = University
