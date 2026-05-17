@@ -5,11 +5,19 @@ const dotenv = require("dotenv").config() //this allows me to use my .env values
 const mongoose = require("mongoose")
 const morgan = require('morgan')
 
+const University = require('./models/University')
+
 
 app.use(express.static('public')) // my app will serve all static files from public folder
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan('dev'))
 
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
 
 
 

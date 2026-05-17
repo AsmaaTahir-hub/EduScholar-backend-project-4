@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose')
 const applicationSchema = new mongoose.Schema({
 user : {
 type : mongoose.Schema.Types.ObjectId ,
@@ -17,5 +17,8 @@ default : "pending" ,
 },
 {timestamps:true}
 ),
+
 const Application = mongoose.model("Application",applicationSchema)
-export default Application
+
+
+module.exports = Application

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose')
 const scholarshipSchema = new mongoose.Schema({
 title : {
 type : String ,
@@ -37,4 +37,6 @@ required : true ,
 {timestamps:true}
 );
 const Scholarship = mongoose.model("Scholarship",scholarshipSchema)
-export default Scholarship
+
+
+module.exports = Scholarship

@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-
+const mongoose = require('mongoose')
 const universitySchema = new mongoose.Schema({
 name : {
 type : String ,
@@ -13,17 +12,15 @@ city : {
 type : String ,
 required : true ,
 } ,
-rinking : {
+ranking : {
 type : Number ,
-} ,
-
-details : {
-type : String ,
-
 } ,
 },
 {timestamps:true}
 
 );
 const University = mongoose.model("University",universitySchema)
-export default University
+
+
+module.exports = University
+
