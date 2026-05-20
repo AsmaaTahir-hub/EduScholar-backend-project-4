@@ -3,8 +3,16 @@ const router = require('express').Router()
 const Scholarship = require('../models/Scholarship')
 const verifyToken = require('../middleware/verify-token')
 
-// CREATE for 
-router.post('/', verifyToken, async (req, res) => {
+const checkAdmin = (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ message: 'Admins only' })
+  }
+
+  next()
+}
+
+// CREATE scholarship - admin only
+router.post('/', verifyToken, checkAdmin, async (req, res) => {
   try {
     const scholarship = await Scholarship.create({
       ...req.body,
@@ -17,7 +25,7 @@ router.post('/', verifyToken, async (req, res) => {
   }
 })
 
-// READ ALL
+// READ all scholarships - everyone
 router.get('/', async (req, res) => {
   try {
     const scholarships = await Scholarship.find()
@@ -30,7 +38,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-// READ ONE
+// READ one scholarship - everyone
 router.get('/:id', async (req, res) => {
   try {
     const scholarship = await Scholarship.findById(req.params.id)
@@ -47,8 +55,8 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-// UPDATE
-router.put('/:id', verifyToken, async (req, res) => {
+// UPDATE scholarship - admin only
+router.put('/:id', verifyToken, checkAdmin, async (req, res) => {
   try {
     const scholarship = await Scholarship.findById(req.params.id)
 
@@ -56,7 +64,6 @@ router.put('/:id', verifyToken, async (req, res) => {
       return res.status(404).json({ message: 'Scholarship not found' })
     }
 
-    // Authorization check
     if (scholarship.createdBy.toString() !== req.user._id) {
       return res.status(403).json({ message: 'Unauthorized' })
     }
@@ -73,8 +80,8 @@ router.put('/:id', verifyToken, async (req, res) => {
   }
 })
 
-// DELETE
-router.delete('/:id', verifyToken, async (req, res) => {
+// DELETE scholarship - admin only
+router.delete('/:id', verifyToken, checkAdmin, async (req, res) => {
   try {
     const scholarship = await Scholarship.findById(req.params.id)
 
@@ -82,14 +89,13 @@ router.delete('/:id', verifyToken, async (req, res) => {
       return res.status(404).json({ message: 'Scholarship not found' })
     }
 
-    // Authorization check
     if (scholarship.createdBy.toString() !== req.user._id) {
       return res.status(403).json({ message: 'Unauthorized' })
     }
 
     await Scholarship.findByIdAndDelete(req.params.id)
 
-    res.json({ message: 'Deleted successfully' })
+    res.json({ message: 'Scholarship deleted successfully' })
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
